@@ -482,8 +482,9 @@ details.what ul { margin: 6px 0 0; padding-left: 18px; }
     const sp = SP.get(s.dex);
     let head = s.nick ? `${s.nick} (${enName(sp)})` : enName(sp);
     if (s.gender) head += ` (${s.gender})`;
-    if (s.item) head += ` @ ${s.item}`;
-    const L = [head, `Ability: ${ABIL[s.ability][0]}`, `Level: ${s.level}`];
+    const L = [head];
+    if (s.item) L.push(`Item: ${s.item}`);
+    L.push(`Ability: ${ABIL[s.ability][0]}`, `Level: ${s.level}`);
     if (s.shiny) L.push("Shiny: Yes");
     if (s.tera >= 0) L.push(`Tera Type: ${TYPES[s.tera][0]}`);
     if (s.ot) L.push(`OT: ${s.ot}`);
@@ -559,6 +560,7 @@ details.what ul { margin: 6px 0 0; padding-left: 18px; }
       else if (key === "level") { if (!/^\d+$/.test(val) || +val < 1 || +val > 100) throw new Error("Level muss zwischen 1 und 100 liegen"); s.level = +val; }
       else if (key === "shiny") s.shiny = ["yes", "ja", "true"].includes(val.toLowerCase());
       else if (key === "nature") { const i = natBy.get(fold(val)); if (i === undefined) throw new Error(`Wesen „${val}“ kenne ich nicht`); s.nature = i; }
+      else if (key === "item") { const en = itemBy.get(fold(val)); if (!en) throw new Error(`Item „${val}“ ist nicht in der Auswahl`); s.item = en; }
       else if (key === "ot") s.ot = val;
       else if (key === "game" || key === "origin game") { const g = gameBy.get(fold(val.replace(/pok[eé]mon/i, ""))); if (g === undefined) throw new Error(`Spiel „${val}“ kenne ich nicht`); s.game = g; }
       else if (key === "ball") { const b = ballBy.get(fold(val)); if (!b) throw new Error(`Ball „${val}“ kenne ich nicht`); s.ball = b; }
